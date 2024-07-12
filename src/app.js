@@ -28,8 +28,14 @@ io.on('connection', (socket) => {
         io.emit('conversacion', conversacion);
     })
     
-    socket.on('nuevoUsuario', (usuario) => {
+    socket.on('nuevoUsuario', (nuevoUsuario) => {
+        usuarios.push(nuevoUsuario)
         socket.emit('conversacion', conversacion);
+        io.emit('conectados',usuarios);
+    })
+
+    socket.on('disconect', usuario => {
+        // buscar el usuario borrarlo de la lista y emitir a todos la nueva lista
     })
 
 })
