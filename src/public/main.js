@@ -10,13 +10,14 @@ Swal.fire({
     text: 'Para ingresar al chat identificarse',
     allowOutsideClick: false,
     inputValidator: (value) => {
+        // get a un endpoint que valide el nombre.
         return !value && 'Che ingresa un nombre capo'
     }
 }).then((result)=>{
-    console.log(result.value) // obtengo el valor del input que paso la validacion
     user = result.value
     title.innerText = 'Bienvenido al chat ' + user
-    socket.emit('newUsers',{ user });
+    socket.emit('nuevoUsuario',{ user });
+    // quiero cargar el chat
 })
 
 
@@ -35,7 +36,7 @@ socket.on('conversacion',(data) => {
         const div = document.createElement('div');
         const nombre = document.createElement('p');
         const mensaje = document.createElement('p');
-        nombre.innerText = chat.user + ': ';
+        nombre.innerText = chat.user === user ? 'Yo: ' : chat.user + ': ';
         nombre.classList.add('bold_name');
         mensaje.innerText = chat.mensaje;
         div.appendChild(nombre);

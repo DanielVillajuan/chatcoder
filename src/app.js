@@ -5,7 +5,7 @@ import ViewRouters from './routes/viewsRouters.route.js';
 import { Server } from 'socket.io';
 
 const app = express();
-const PORT = 8080 || 3000 // esto deberia de ser un valor desde la variable de entorno
+const PORT = 8080 // esto deberia de ser un valor desde la variable de entorno
 
 app.engine('handlebars', handlebars.engine()); // especifico que motor de plantilla vamos
 app.set('views', __dirname + '/views');
@@ -19,14 +19,17 @@ const httpServer = app.listen(PORT, () => {
 
 const io = new Server(httpServer);
 const conversacion = [];
+const usuarios = [];
 
 io.on('connection', (socket) => {
-    console.log('Nueva conexion')
 
     socket.on('mensaje',(data) => {
         conversacion.push(data);
-        console.log(data)
         io.emit('conversacion', conversacion);
+    })
+    
+    socket.on('nuevoUsuario', (usuario) => {
+        socket.emit('conversacion', conversacion);
     })
 
 })
